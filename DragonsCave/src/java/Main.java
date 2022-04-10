@@ -1,11 +1,9 @@
-package com.genspark;
-
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
+        DragonsCave dragonsCave = new DragonsCave();
 
         System.out.println("You are in a land full of dragons. In front of you, ");
         System.out.println("you see two caves. In one cave, the dragon  is friendly");
@@ -13,15 +11,13 @@ public class Main {
         System.out.println("is greedy and hungry and will eat you on sight.");
         System.out.println("Which cave will you go into? (1 or 2)");
 
-        int choice = 0;
-
         try {
-            choice = s.nextInt();
+            dragonsCave.getUserChoice();
         } catch (Exception e) {
             throw e;
         }
 
-        if (choice == 1) {
+        if (dragonsCave.getChoice() == 1) {
             System.out.println("You approach the cave...");
             System.out.println("It is dark and spooky...");
             System.out.println("A large dragon jumps out in front of you! He opens his jaws and...");

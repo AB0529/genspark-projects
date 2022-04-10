@@ -1,23 +1,18 @@
-package com.genspark;
-
+import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.Random;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
-        Random random = new Random();
-        int numberToGuess = 0;
+        GuessTheNumber guessTheNumber = new GuessTheNumber();
+        guessTheNumber.generateNewNumber();
 
         try {
-            numberToGuess = random.nextInt(20) + 1;
-        } catch (Exception e) {
+            playGame(guessTheNumber.getNumberToGuess());
+        } catch (InputMismatchException e) {
             throw e;
         }
-
-        System.out.println(numberToGuess);
-        playGame(s, numberToGuess);
 
         while (true) {
             // Play again prompt
@@ -26,12 +21,16 @@ public class Main {
 
             if (playAgain.equals("y")) {
                 try {
-                    numberToGuess = random.nextInt(20) + 1;
+                    guessTheNumber.generateNewNumber();
                 } catch (Exception e) {
                     throw e;
                 }
 
-                playGame(s, numberToGuess);
+                try {
+                    playGame(guessTheNumber.getNumberToGuess());
+                } catch (InputMismatchException e) {
+                    throw e;
+                }
             }
             else
                 break;
@@ -39,7 +38,8 @@ public class Main {
 
     }
 
-    public static void playGame(Scanner s, int numberToGuess) {
+    public static void playGame(int numberToGuess) {
+        Scanner s = new Scanner(System.in);
         int guessesCount = 0;
 
         System.out.println("Hello! What is your name?");
@@ -52,7 +52,11 @@ public class Main {
 
         while (userGuess != numberToGuess) {
             System.out.println("Take a guess.");
-            userGuess = s.nextInt();
+            try {
+                userGuess = s.nextInt();
+            } catch (Exception e) {
+                throw e;
+            }
 
             // Too low
             if (userGuess < numberToGuess)
