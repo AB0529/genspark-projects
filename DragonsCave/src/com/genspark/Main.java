@@ -13,7 +13,13 @@ public class Main {
         System.out.println("is greedy and hungry and will eat you on sight.");
         System.out.println("Which cave will you go into? (1 or 2)");
 
-        int choice = s.nextInt();
+        int choice = 0;
+
+        try {
+            choice = s.nextInt();
+        } catch (Exception e) {
+            throw e;
+        }
 
         if (choice == 1) {
             System.out.println("You approach the cave...");
@@ -30,7 +36,5 @@ public class Main {
         System.out.println("Loudly exclaims");
         System.out.println("\"You are brave to be exploring down here!");
         System.out.println("Take my treasure as a reward, traveller!\"");
-
-        return;
     }
 }

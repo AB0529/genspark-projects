@@ -8,7 +8,13 @@ public class Main {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         Random random = new Random();
-        int numberToGuess = random.nextInt(20) + 1;
+        int numberToGuess = 0;
+
+        try {
+            numberToGuess = random.nextInt(20) + 1;
+        } catch (Exception e) {
+            throw e;
+        }
 
         System.out.println(numberToGuess);
         playGame(s, numberToGuess);
@@ -18,8 +24,15 @@ public class Main {
             System.out.println("Would you like to play again? (y or n)");
             String playAgain = s.next().toLowerCase();
 
-            if (playAgain.equals("y"))
-                playGame(s, random.nextInt(20) + 1);
+            if (playAgain.equals("y")) {
+                try {
+                    numberToGuess = random.nextInt(20) + 1;
+                } catch (Exception e) {
+                    throw e;
+                }
+
+                playGame(s, numberToGuess);
+            }
             else
                 break;
         }
