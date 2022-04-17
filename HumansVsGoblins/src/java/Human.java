@@ -4,6 +4,8 @@ public class Human {
     private int strength = 2;
     private int x;
     private int y;
+    private int px;
+    private int py;
 
     public Human() {}
     public Human(int health) {
@@ -40,6 +42,22 @@ public class Human {
 
     public int getY() {
         return y;
+    }
+
+    public void setPx(int px) {
+        this.px = px;
+    }
+
+    public int getPx() {
+        return px;
+    }
+
+    public void setPy(int py) {
+        this.py = py;
+    }
+
+    public int getPy() {
+        return py;
     }
 
     @Override

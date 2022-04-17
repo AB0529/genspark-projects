@@ -95,7 +95,7 @@ public class Land {
             s.nextLine();
         }
 
-        board[h.getX()][h.getY()] = null;
+        board[h.getPx()][h.getPy()] = null;
         System.out.println("You have defeated the Goblin!");
     }
 
@@ -106,6 +106,8 @@ public class Land {
     public Object moveUp() {
         int x = player.getX();
         int y = player.getY();
+        player.setPx(x);
+        player.setPy(y);
 
         if (player.getX() - 1 < 0)
             return board[x][y];
@@ -123,6 +125,8 @@ public class Land {
     public Object moveDown() {
         int x = player.getX();
         int y = player.getY();
+        player.setPx(x);
+        player.setPy(y);
 
         if (x + 1 >= height)
             return board[x][y];
@@ -140,6 +144,8 @@ public class Land {
     public Object moveLeft() {
         int x = player.getX();
         int y = player.getY();
+        player.setPx(x);
+        player.setPy(y);
 
         if (y - 1 < 0)
             return board[x][y];
@@ -157,6 +163,8 @@ public class Land {
     public Object moveRight() {
         int x = player.getX();
         int y = player.getY();
+        player.setPx(x);
+        player.setPy(y);
 
         if (y + 1 >= width)
             return board[x][y];

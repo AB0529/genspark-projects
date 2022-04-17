@@ -8,6 +8,8 @@ public class Goblin {
     int health;
     int x;
     int y;
+    private int px;
+    private int py;
 
     public Goblin() {}
     public Goblin(int strength, int health) {
@@ -55,6 +57,22 @@ public class Goblin {
 
     public int getY() {
         return y;
+    }
+
+    public void setPx(int px) {
+        this.px = px;
+    }
+
+    public int getPx() {
+        return px;
+    }
+
+    public void setPy(int py) {
+        this.py = py;
+    }
+
+    public int getPy() {
+        return py;
     }
 
     @Override
