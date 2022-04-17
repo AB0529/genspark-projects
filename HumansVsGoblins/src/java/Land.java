@@ -1,7 +1,5 @@
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Vector;
 
 public class Land {
     private int width;
@@ -205,6 +203,10 @@ public class Land {
 
     public void setBoard(Object[][] board) {
         this.board = board;
+    }
+
+    public Human getPlayer() {
+        return player;
     }
 
     public Object[][] getBoard() {

@@ -19,7 +19,6 @@ public class Main {
             switch (direction) {
                 case "up":
                     o = land.moveUp();
-                    System.out.println(o);
                    if (o instanceof Goblin) {
                        land.startCombat((Goblin) o);
                    }
