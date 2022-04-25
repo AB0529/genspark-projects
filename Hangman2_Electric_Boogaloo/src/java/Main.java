@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -45,9 +48,25 @@ public class Main {
 
     public static boolean exitPrompt(Hangman hangman, FileUtils fileUtils, Scanner s) {
         System.out.println("Score: " + hangman.getUserScore());
-        fileUtils.write(hangman.getUsername(), String.valueOf(hangman.getUserScore()));
-
         fileUtils.read();
+
+        // Check if they got new highest score
+        if (fileUtils.getProps().size() <= 0) {
+            System.out.println("YOU SET A NEW HIGHSCORE!!");
+        } else {
+            List<Integer> scores = new ArrayList<>();
+            fileUtils.getProps().forEach((key, value) -> {
+                scores.add(Integer.valueOf(String.valueOf(value)));
+            });
+            int max = Collections.max(scores);
+
+            if (hangman.getUserScore() > max)
+                System.out.println("YOU SET A NEW HIGHSCORE!!");
+        }
+
+        fileUtils.write(hangman.getUsername(), String.valueOf(hangman.getUserScore()));
+        fileUtils.read();
+
         System.out.println("#--- Leaderboard ---#");
         fileUtils.getProps().entrySet().forEach(System.out::println);
 
