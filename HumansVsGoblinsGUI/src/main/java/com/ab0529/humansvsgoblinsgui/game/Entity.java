@@ -1,5 +1,9 @@
 package com.ab0529.humansvsgoblinsgui.game;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -9,10 +13,10 @@ import java.util.ArrayList;
 public abstract class Entity {
     private int health;
     private int strength;
-    private String icon;
     private int x;
     private int y;
 
+    private Text icon;
     private Inventory inventory;
 
     public Entity(int health, int strength) {
@@ -21,10 +25,38 @@ public abstract class Entity {
         inventory = new Inventory();
     }
 
+    // Movement
+    public void moveUp() {
+        setY(getY() - 1);
+    }
 
+    public void moveDown() {
+        setY(getY() + 1);
+    }
+
+    public void moveLeft() {
+        setX(getX() - 1);
+    }
+
+    public void moveRight() {
+        setX(getX() + 1);
+    }
 
     // Getters and setters
 
+    public Text getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String path) {
+        icon = new Text(path);
+//        icon.setText(path);
+//        icon = new ImageView();
+//
+//        icon.setFitWidth(82);
+//        icon.setFitHeight(50);
+//        icon.setImage( new Image(path) );
+    }
 
     public int getX() {
         return x;
@@ -40,14 +72,6 @@ public abstract class Entity {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
 
     public int getStrength() {

@@ -1,19 +1,43 @@
 package com.ab0529.humansvsgoblinsgui.game;
 
+import com.ab0529.humansvsgoblinsgui.game.items.Fists;
+import com.ab0529.humansvsgoblinsgui.game.items.Pillow;
+import com.ab0529.humansvsgoblinsgui.game.items.Stick;
+
 import java.util.HashMap;
 
 public class Inventory {
     public HashMap<Integer, Item> inventory;
 
-    public Inventory() {}
+    public Inventory() {
+        inventory = new HashMap<>();
+    }
 
     /**
      * Adds an item to the entity's inventory
+     *
      * @param item the item to add
-     * @return the item added
      */
-    public Item addToInventory(Item item) {
-        return inventory.put(item.getId(), item);
+    public void addToInventory(Item item) {
+        inventory.put(item.getId(), item);
+    }
+
+    /**
+     * Will add a random item (based on item id) to the inventory map
+     */
+    public void addRandomItem() {
+        int id = (int) (Math.random() * 2);
+
+        switch (id) {
+            case 0:
+                addToInventory(new Stick());
+                break;
+            case 1:
+                addToInventory(new Pillow());
+            case 2:
+                addToInventory(new Fists());
+                break;
+        }
     }
 
     /**
