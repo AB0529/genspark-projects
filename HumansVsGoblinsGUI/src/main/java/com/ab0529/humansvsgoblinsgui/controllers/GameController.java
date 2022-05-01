@@ -1,24 +1,19 @@
 package com.ab0529.humansvsgoblinsgui.controllers;
 
-import com.ab0529.humansvsgoblinsgui.HVG;
 import com.ab0529.humansvsgoblinsgui.game.Entity;
 import com.ab0529.humansvsgoblinsgui.game.Goblin;
 import com.ab0529.humansvsgoblinsgui.game.Human;
-import com.ab0529.humansvsgoblinsgui.game.items.Pillow;
-import com.ab0529.humansvsgoblinsgui.game.items.Stick;
 import javafx.fxml.FXML;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 public class GameController {
-    private Human player;
-    private ArrayList<Entity> entities;
-    private Random rand = new Random();
+    private final Human player;
+    private final ArrayList<Entity> entities;
+    private final Random rand;
 
     @FXML
     GridPane grid;
@@ -26,13 +21,28 @@ public class GameController {
     public GameController(Human player) {
         this.player = player;
         player.setIcon(player.getName());
-        entities = new ArrayList<>();
-        rand.setSeed(1);
 
+        entities = new ArrayList<>();
+
+        rand = new Random();
+        rand.setSeed(1);
+    }
+
+    // TODO: fix duplicates on draw
+    public void drawEntities() {
+        for (Entity e : entities) {
+            int x = e.getX();
+            int y = e.getY();
+
+            grid.add(e.getIcon(), x, y);
+        }
+    }
+
+    public void initialize() {
+        // Add player to 0, 0
         player.setX(0);
         player.setY(0);
 
-        // Add player to 0, 0
         entities.add(player);
 
         // Generate some enemies
@@ -57,19 +67,7 @@ public class GameController {
 
             entities.add(g);
         }
-    }
 
-    // TODO: fix duplicates on draw
-    public void drawEntities() {
-        for (Entity e : entities) {
-            int x = e.getX();
-            int y = e.getY();
-
-            grid.add(e.getIcon(), x, y);
-        }
-    }
-
-    public void initialize() {
         // Add all entities to grid
         drawEntities();
     }
