@@ -1,14 +1,18 @@
 package model;
 
+import com.ab0529.hvg.HVG;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 
 /**
  * Player represents the player model
  */
 public class Actor {
+    private HVG game;
     private TileMap map;
     private int x;
     private int y;
+    private Texture texture;
 
     // Animation
     private float worldX, worldY; // Cords sprite gets rendered to
@@ -58,20 +62,20 @@ public class Actor {
      * Will check for out of bounds and if a tile is occupied
      * @param dx how many units to move in the x axis
      * @param dy how many units to move in the y axis
-     * @return boolean on if the move was successful or not
+     * @return MOVEMENT enum
      */
-    public boolean move(int dx, int dy) {
+    public MoveCode move(int dx, int dy) {
         // Check if actor is not in the middle of a move
         if (state != ACTOR_STATE.STANDING)
-            return false;
+            return new MoveCode(MOVEMENT.NOT_STANDING, null);
 
         // Check is target position is in bounds
         if (x + dx >= map.getWidth() || x + dx < 0 || y + dy >= map.getHeight() || y + dy < 0)
-            return false;
+            return new MoveCode(MOVEMENT.OUT_OF_BOUNDS, null);
 
         // Check if tile we want to move to isn't occupied
         if (map.getTile(x + dx, y + dy).getActor() != null)
-            return false;
+            return new MoveCode(MOVEMENT.SPACE_OCCUPIED, map.getTile(x + dx, y + dy).getActor());
 
         initalizeMove(x, y, dx, dy);
 
@@ -85,7 +89,7 @@ public class Actor {
         // Set this actor on new tile
         map.getTile(x, y).setActor(this);
 
-        return true;
+        return new MoveCode(MOVEMENT.SUCCESS, null);
     }
 
     private void initalizeMove(int oldX, int oldY, int dx, int dy) {
@@ -126,5 +130,21 @@ public class Actor {
 
     public float getWorldX() {
         return worldX;
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public void setGame(HVG game) {
+        this.game = game;
+    }
+
+    public HVG getGame() {
+        return game;
     }
 }

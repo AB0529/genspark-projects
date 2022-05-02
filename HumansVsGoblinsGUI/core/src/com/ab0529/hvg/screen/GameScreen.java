@@ -6,35 +6,68 @@ import com.ab0529.hvg.controller.PlayerController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import model.Actor;
-import model.Camera;
-import model.TileMap;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import model.*;
 
-import java.util.Set;
+import java.util.Random;
 
 /**
  * GameScreen represents a "scene" of the game
- * TODO: Organize fields
  */
 public class GameScreen extends AbstractScreen {
+
+    private World world;
+    private Human player;
     private Camera camera;
-    private PlayerController playerController;
-    private Actor player;
-    private TileMap map;
+
+    private Viewport gameViewport;
     private SpriteBatch batch;
+
+    private PlayerController playerController;
+
     private Texture amogus;
+    private Texture goblin;
     private Texture grass1;
 
     public GameScreen(HVG app) {
         super(app);
 
-        amogus = new Texture(Gdx.files.internal("amogus.png"));
-        grass1 = new Texture(Gdx.files.internal("grass1.png"));
+        world = new World(25, 25);
         batch = new SpriteBatch();
-        map = new TileMap(10, 10);
-        player = new Actor(map, 0, 0);
+        gameViewport = new ScreenViewport();
+
+        amogus = new Texture(Gdx.files.internal("amogus.png"));
+        goblin = new Texture(Gdx.files.internal("goblin.png"));
+        grass1 = new Texture(Gdx.files.internal("grass1.png"));
+
+        player = new Human(world.getMap(), world.getMap().getWidth() / 2, world.getMap().getHeight() / 2, 10, 1);
+        player.setTexture(amogus);
+
+        player.setGame(app);
+
+        world.addActor(player);
+
+        Random random = new Random();
+        random.setSeed(1);
+
+        for (int i = 0; i < 1; i++) {
+            int health = random.nextInt(20);
+            int strength = random.nextInt(5);
+            int x = random.nextInt(world.getMap().getWidth());
+            int y = random.nextInt(world.getMap().getHeight());
+
+            Goblin g = new Goblin(world.getMap(), x, y, health, strength);
+            g.setTexture(goblin);
+
+            world.addActor(g);
+        }
+
         playerController = new PlayerController(player);
+
         camera = new Camera();
+
+        player.setWorld(world);
     }
 
     /**
@@ -52,6 +85,8 @@ public class GameScreen extends AbstractScreen {
      */
     @Override
     public void render(float delta) {
+        gameViewport.apply();
+
         // Update player each frame
         player.update(delta);
         // Make sure the camera is focused in the center of the player
@@ -64,8 +99,8 @@ public class GameScreen extends AbstractScreen {
         float worldStartY = (Gdx.graphics.getHeight( ) / 2) - (camera.getCameraY() * Settings.SCALED_TILE_SIZE);
 
         // Draw each tile of map
-        for (int x = 0; x < map.getWidth(); x++)
-            for (int y = 0; y < map.getHeight(); y++)
+        for (int x = 0; x < world.getMap().getWidth(); x++)
+            for (int y = 0; y < world.getMap().getHeight(); y++)
                 batch.draw(
                         grass1,
                         worldStartX + x * Settings.SCALED_TILE_SIZE,
@@ -73,12 +108,14 @@ public class GameScreen extends AbstractScreen {
                         Settings.SCALED_TILE_SIZE,
                         Settings.SCALED_TILE_SIZE);
 
-        // Draw the player
-        batch.draw(amogus,
-                worldStartX + player.getWorldX() * Settings.SCALED_TILE_SIZE,
-                worldStartY + player.getWorldY() * Settings.SCALED_TILE_SIZE,
-                Settings.SCALED_TILE_SIZE,
-                Settings.SCALED_TILE_SIZE * 1.5f);
+        // Draw each actor
+        for (Actor a : world.getActors()) {
+            batch.draw(a.getTexture(),
+                    worldStartX + a.getWorldX() * Settings.SCALED_TILE_SIZE,
+                    worldStartY + a.getWorldY() * Settings.SCALED_TILE_SIZE,
+                    Settings.SCALED_TILE_SIZE,
+                    Settings.SCALED_TILE_SIZE * 1.5f);
+        }
 
         // End batch draw
         batch.end();
@@ -86,6 +123,8 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void resize(int width, int height) {
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+        gameViewport.update(width, height);
     }
 
     @Override

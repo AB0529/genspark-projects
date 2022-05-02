@@ -3,16 +3,19 @@ package com.ab0529.hvg.controller;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import model.Actor;
+import model.Human;
+import model.MOVEMENT;
+import model.MoveCode;
 
 /**
  * PlayerController handles inputs relating to
  * Controlling the playyer
  */
 public class PlayerController extends InputAdapter {
-    private Actor player;
+    private Human player;
 
     public PlayerController(Actor p) {
-        player = p;
+        player = (Human) p;
     }
 
 
@@ -28,19 +31,19 @@ public class PlayerController extends InputAdapter {
         switch (keycode) {
             case Input.Keys.W:
             case Input.Keys.UP:
-                player.move(0, 1);
+                player.battle(player.move(0, 1));
                 break;
             case Input.Keys.S:
             case Input.Keys.DOWN:
-                player.move(0, -1);
+                player.battle(player.move(0, -1));
                 break;
             case Input.Keys.A:
             case Input.Keys.LEFT:
-                player.move(-1, 0);
+                player.battle(player.move(-1, 0));
                 break;
             case Input.Keys.D:
             case Input.Keys.RIGHT:
-                player.move(1, 0);
+                player.battle(player.move(1, 0));
                 break;
         }
 
